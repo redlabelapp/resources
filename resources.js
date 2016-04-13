@@ -6,6 +6,9 @@ Generate icon and splash screen resources
 Takes an image 'icon.png' and outputs to pre-existing directories res/*
 
 Requires Imagemagick (imagemagick.org)
+
+TODO: Android 9-patch (http://developer.android.com/tools/help/draw9patch.html)
+TODO: iOS html splash
 */
 (function(specification) {
     var shell = require('child_process');
@@ -20,8 +23,8 @@ Requires Imagemagick (imagemagick.org)
                             '-gravity center -resize ' + Math.floor((Math.min(width, height)) / 5.333) + ' -extent ' + width + 'x' + height) + ' ' + output;
                     console.log(command);
                     shell.exec(command, function(error, stdout, stderr) {
-                        console.log(stdout);
-                        console.log(stderr);
+                        stdout && console.log(stdout);
+                        stderr && console.log(stderr);
                         if (error)
                             console.log(error);
                     });
