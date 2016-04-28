@@ -12,23 +12,24 @@ TODO: iOS html splash
 */
 (function(specification) {
     var shell = require('child_process');
-    for (var location in specification)
+    for (var location in specification){
+    	// create directories if necessary
+    	var mkdirp = 'mkdir -p ' + location;
+    	//console.log(mkdirp);
+    	shell.exec(mkdirp, out);
+    	// create each variant in each target directory
         for (var namesize in specification[location])
             (location + specification[location][namesize])
             .replace(/(^\S+) (\d+)x(\d+)?/,
                 function(spec, output, width, height) {
-                    var command = '/opt/local/bin/convert icon.png ' +
+                    var convert = '/opt/local/bin/convert icon.png ' +
                         (width == height ?
                             '-resize ' + width :
                             '-gravity center -resize ' + Math.floor((Math.min(width, height)) / 5.333) + ' -extent ' + width + 'x' + height) + ' ' + output;
-                    console.log(command);
-                    shell.exec(command, function(error, stdout, stderr) {
-                        stdout && console.log(stdout);
-                        stderr && console.log(stderr);
-                        if (error)
-                            console.log(error);
-                    });
+                    console.log(convert);
+                    shell.exec(convert, out);
                 });
+    }
 })({
     'res/ios/': [
         'iTunesArtwork.png 512x512',
@@ -72,9 +73,26 @@ TODO: iOS html splash
 
         'display-xhdpi-icon.png 96x96',
         'display-port-xhdpi-splashscreen.png 768x1024',
-        'display-land-xhdpi-splashscreen.png 1024x768'
+        'display-land-xhdpi-splashscreen.png 1024x768',
+
+        'display-xxhdpi-icon.png 144x144',
+        'display-port-xxhdpi-splashscreen.png 960x1600',
+        'display-land-xxhdpi-splashscreen.png 1600x960',
+
+        'display-xxxhdpi-icon.png 192x192',
+        'display-port-xxxhdpi-splashscreen.png 1280x1920',
+        'display-land-xxxhdpi-splashscreen.png 1920x1280'
     ]
 });
+
+function out(error, stdout, stderr) {
+    stdout && console.log(stdout);
+    stderr && console.log(stderr);
+    if (error)
+        console.log(error);
+}
+
+
 
 /*
 	see also:
